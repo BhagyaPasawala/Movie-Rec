@@ -42,19 +42,17 @@ const App = () => {
   const fetchMovie = async (genre, rating) => {
     try {
       const randomPage = Math.floor(Math.random() * 500) + 1;
-      const response = await axios.get(`
-        https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&page=${randomPage}&with_genres=${genre}&vote_average.gte=${rating.split(',')[0]}&vote_average.lte=${rating.split(',')[1]}`);
+      const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&page=${randomPage}&with_genres=${genre}&vote_average.gte=${rating.split(',')[0]}&vote_average.lte=${rating.split(',')[1]}`);
       return response.data;
     } catch (err) {
       setError('Error fetching movie data.');
       return null;
     }
   };
-
+  
   const fetchTrailer = async (movieId) => {
     try {
-      const response = await axios.get(`
-        https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}`);
+      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}`);
       const trailers = response.data.results;
       const trailer = trailers.find((vid) => vid.type === 'Trailer');
       return trailer ? `https://www.youtube.com/embed/${trailer.key}` : '';
@@ -63,6 +61,7 @@ const App = () => {
       return '';
     }
   };
+  
 
   const fetchRandomMovie = async () => {
     const data = await fetchMovie(selectedGenre, selectedRating);
